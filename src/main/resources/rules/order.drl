@@ -1,0 +1,19 @@
+//created on: Mar 29, 2017
+package nooo.pwr
+
+//list any import classes here.
+import noob.pwr.Magazine;
+import noob.pwr.Order;
+import noob.pwr.OrderResponse;
+import noob.pwr.OrderAnswer;
+
+//declare any global variables here
+
+rule "ItemsExists"
+
+    when
+	   Order( desicion == "alfa")
+    then
+      System.out.println( "Order undecided");
+
+end

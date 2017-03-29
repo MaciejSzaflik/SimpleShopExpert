@@ -16,24 +16,32 @@ import java.util.List;
 
 
 public class MainGui extends JFrame {
+	
+	KieServices ks;
+	KieContainer kContainer;
+ 	KieSession kSession;
+	
 	public MainGui() {
 		getContentPane().setLayout(null);
+		initializeSession();
 		
 		JButton btnHello = new JButton("Hello");
 		btnHello.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-		            // load up the knowledge base
-			        KieServices ks = KieServices.Factory.get();
-		    	    KieContainer kContainer = ks.getKieClasspathContainer();
-		        	KieSession kSession = kContainer.newKieSession("ksession-rules");
-
-		            // go !
-		            Message message = new Message();
-		            message.setMessage("Hello World");
-		            message.setStatus(Message.HELLO);
-		            kSession.insert(message);
+					Order order = new Order();
+					Message message1 = new Message();
+					message1.setMessage("Hello World");
+		            message1.setStatus(Message.HELLO);
+		            
+		            Message message2 = new Message();
+		            message2.setMessage("Hello World");
+		            message2.setStatus(Message.HELLO);
+		              
+		            kSession.insert(message1);
+		            kSession.insert(message2);
 		            kSession.fireAllRules();
+
 		        } catch (Throwable t) {
 		            t.printStackTrace();
 		        }
@@ -43,6 +51,13 @@ public class MainGui extends JFrame {
 		getContentPane().add(btnHello);
 		
 		
+	}
+	
+	public void initializeSession()
+	{
+		ks = KieServices.Factory.get();
+		kContainer = ks.getKieClasspathContainer();
+     	kSession = kContainer.newKieSession("ksession-rules");
 	}
 
 	private static MainGui instance;
