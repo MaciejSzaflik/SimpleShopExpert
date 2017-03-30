@@ -1,0 +1,21 @@
+package com.sample
+ 
+import noob.pwr.Order;
+ 
+rule "Order"
+	when
+		o : Order( decision == "alfa")
+	then
+		System.out.println("test");
+		o.setDecision("beta");
+		update(o);
+end
+
+rule "No empty"
+	when
+		o : Order( items.size() == 0, decision == "beta")
+	then
+		System.out.println("empty");
+		o.setDecision("ceta");
+		update(o);
+end

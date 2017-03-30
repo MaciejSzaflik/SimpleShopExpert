@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Order {
-	public String desicion;
+	public String decision;
 	public List<Item> items;
 	
 	public Order(Item[] order)
 	{
-		desicion = "alfa";
+		decision = "alfa";
 		items = new ArrayList<Item>();
 		for(Item item : order)
 		{
@@ -19,5 +19,15 @@ public class Order {
 
 	public Order() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	public void setDecision(String decision)
+	{
+		this.decision = decision;
+	}
+	
+	public int getNumberOfItems()
+	{
+		return items.size();
 	}
 }
