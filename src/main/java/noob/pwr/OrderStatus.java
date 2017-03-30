@@ -1,6 +1,6 @@
 package noob.pwr;
 
-public enum OrderAnswer {
+public enum OrderStatus {
 	Accepted,
 	Declined,
 	Undecided

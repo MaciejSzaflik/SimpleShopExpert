@@ -10,9 +10,6 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class MainGui extends JFrame {
 	
@@ -28,9 +25,12 @@ public class MainGui extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				 try {
 			            Item[] items = {};
-			            Order order = new Order(items);
+			            Item[] it2 = {new Item("eggs",-1)};
+			            Order test1 = new Order(items);
+			            Order test2 = new Order(it2);
 			            
-			            kSession.insert(order);			   
+			            kSession.insert(test1);	
+			            kSession.insert(test2);
 			            kSession.fireAllRules();
 			        } catch (Throwable t) {
 			            t.printStackTrace();

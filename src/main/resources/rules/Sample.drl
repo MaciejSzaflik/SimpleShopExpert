@@ -1,21 +1,33 @@
 package com.sample
  
 import noob.pwr.Order;
+import noob.pwr.OrderStatus;
  
-rule "Order"
+
+rule "Is Empty"
 	when
-		o : Order( decision == "alfa")
+		o : Order( items.size() == 0, ShouldCheck())
 	then
-		System.out.println("test");
-		o.setDecision("beta");
+		o.status = OrderStatus.Declined;
+		System.out.println(drools.getRule().getName() + ": " + o.id  + " was " + o.status);
 		update(o);
 end
 
-rule "No empty"
+rule "Is Valid"
 	when
-		o : Order( items.size() == 0, decision == "beta")
+		o : Order( ShouldCheck(), !CheckIfItemsValid())
 	then
-		System.out.println("empty");
-		o.setDecision("ceta");
+		o.status = OrderStatus.Declined;
+		System.out.println(drools.getRule().getName() + ": " + o.id  + " was " + o.status);
 		update(o);
 end
+
+rule "No Shop"
+	when
+		o : Order( ShouldCheck(), !isRespondedSet())
+	then
+		o.status = OrderStatus.Declined;
+		System.out.println(drools.getRule().getName() + ": " + o.id  + " was " + o.status);
+		update(o);
+end
+

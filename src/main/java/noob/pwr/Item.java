@@ -15,6 +15,11 @@ public class Item {
 		return toCompare.equalsIgnoreCase(getType());
 	}
 	
+	public boolean IsValid()
+	{
+		return type !=null && !type.isEmpty() && quanity > 0;
+	}
+	
 	public boolean checkIfEnought(int itemCount)
 	{
 		return quanity >= itemCount;

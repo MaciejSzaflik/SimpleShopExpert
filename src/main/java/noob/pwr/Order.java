@@ -4,17 +4,46 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Order {
+	public static int idGenerator = 0;
+	public int id;
+	public OrderStatus status;
 	public String decision;
 	public List<Item> items;
+	public long timeStamp;
+	public int shopId = -1;
 	
 	public Order(Item[] order)
 	{
+		id = idGenerator++;
 		decision = "alfa";
+		status = OrderStatus.Undecided;
 		items = new ArrayList<Item>();
 		for(Item item : order)
 		{
 			items.add(item);
 		}
+	}
+	
+	public boolean isRespondedSet()
+	{
+		return shopId > 0;
+	}
+	
+	public boolean ShouldCheck()
+	{
+		return status == OrderStatus.Undecided;
+	}
+	
+	public boolean CheckIfItemsValid()
+	{
+		for(Item item : items)
+		{
+			if(!item.IsValid())
+				return false;
+		}
+		
+		return true;
+		
 	}
 
 	public Order() {
@@ -30,4 +59,7 @@ public class Order {
 	{
 		return items.size();
 	}
+	
+	
+	
 }
