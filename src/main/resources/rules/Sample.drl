@@ -22,7 +22,7 @@ rule "Is Valid"
 		update(o);
 end
 
-rule "No Shop"
+rule "No Shop Set"
 	when
 		o : Order( ShouldCheck(), !isRespondedSet())
 	then

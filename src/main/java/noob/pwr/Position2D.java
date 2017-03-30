@@ -8,4 +8,9 @@ public class Position2D {
 	{
 		return Math.abs(this.x - point.x) + Math.abs(this.y - point.y);
 	}
+	
+	public int getTimeToTravel(Position2D to, int speed)
+	{
+		return getManhatanDistance(to)/speed;
+	}
 }
