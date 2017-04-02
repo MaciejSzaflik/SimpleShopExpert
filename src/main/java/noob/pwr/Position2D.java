@@ -4,6 +4,15 @@ public class Position2D {
 	public float x;
 	public float y;
 	
+	public int getIntX()
+	{
+		return (int)x;
+	}
+	public int getIntY()
+	{
+		return (int)y;
+	}
+	
 	public Position2D(float x, float y) {
 		this.x = x;
 		this.y = y;

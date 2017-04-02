@@ -11,6 +11,7 @@ public class Order {
 	public List<Item> items;
 	public long timeStamp;
 	public int shopId = -1;
+	public boolean filled = false;
 	
 	public Order(Item[] order,int shopId)
 	{
@@ -22,6 +23,7 @@ public class Order {
 		{
 			items.add(item);
 		}
+		this.shopId = shopId;
 	}
 	
 	public int getSize()

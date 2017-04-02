@@ -5,9 +5,12 @@ public class Truck {
 	public int id;
 	public int speed;
 	public int capacity;
+	public TruckState status;
 	
-	public Truck()
+	public Truck(int capacity)
 	{
 		id = idGenerator++;
+		this.capacity = capacity;
+		status = TruckState.Idle;
 	}
 }

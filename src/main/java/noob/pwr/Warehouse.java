@@ -47,10 +47,17 @@ public class Warehouse {
 		return status == Status.Undefined;
 	}
 	
-	public void FillOrder(Order order)
+	public boolean FillOrder(Order order)
 	{
+		if(!checkOrderInWarehouse(order))
+			return false;
+		
 		for(Item item : order.items)
+		{
 			getItemFromMagazine(item.getType(),item.getQuanity());
+		}
+		order.filled = true;
+		return true;
 	}
 	
 	public Item getItemFromMagazine(ProductName type, int quanity)
@@ -63,11 +70,17 @@ public class Warehouse {
 	
 	public boolean checkOrderInWarehouse(Order order)
 	{
+		if(order.items == null)
+			return false;
+		
 		for(Item item : order.items)
 		{
-			if(!checkItemInMagazine(item))
-				return false;
+			if(checkItemInMagazine(item))
+				continue;
+			else
+				return false;		
 		}
+		
 		return true;
 	}
 	
@@ -96,6 +109,22 @@ public class Warehouse {
 		else
 		{
 			items.put(item.getType(), item);
+		}
+	}
+	
+	public void addTrucks(Truck[] toAdd)
+	{
+		for(Truck truck : toAdd)
+		{
+			addTruck(truck);
+		}
+	}
+	
+	public void addTruck(Truck truck)
+	{
+		if(!fleet.containsKey(truck.id))
+		{
+			fleet.put(truck.id,truck);
 		}
 	}
 	

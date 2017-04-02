@@ -40,8 +40,25 @@ rule "Are Items In Warehouse"
 	when
 		o : Order(ShouldCheck() , warehouse.checkOrderInWarehouse(o))
 	then
+		o.status = OrderStatus.Accepted;
+		o.printStatus(drools.getRule().getName());
+		update(o);
+end
+
+rule "Try To Fill"
+	when
+		o : Order(o.status == OrderStatus.Accepted, !warehouse.FillOrder(o))
+	then
+		o.status = OrderStatus.NoItems;
+		o.printStatus(drools.getRule().getName());
+		update(o);
+end
+
+rule "Prepare To Send"
+	when
+		o : Order(o.status == OrderStatus.Accepted, o.filled)
+	then
 		o.status = OrderStatus.ReadyToSend;
-		warehouse.FillOrder(o);
 		o.printStatus(drools.getRule().getName());
 		update(o);
 end

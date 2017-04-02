@@ -4,6 +4,8 @@ public enum OrderStatus {
 	Fullfield,
 	Send,
 	ReadyToSend,
+	Accepted,
 	Declined,
-	Undecided
+	Undecided,
+	NoItems
 }
