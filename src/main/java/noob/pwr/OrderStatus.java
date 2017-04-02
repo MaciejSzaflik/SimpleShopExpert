@@ -1,7 +1,9 @@
 package noob.pwr;
 
 public enum OrderStatus {
-	Accepted,
+	Fullfield,
+	Send,
+	ReadyToSend,
 	Declined,
 	Undecided
 }

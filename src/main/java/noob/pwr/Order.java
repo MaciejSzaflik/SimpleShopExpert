@@ -36,7 +36,12 @@ public class Order {
 	
 	public boolean isRespondedSet()
 	{
-		return shopId > 0;
+		return shopId >= 0;
+	}
+	
+	public void printStatus(String ruleName)
+	{
+		System.out.println(ruleName + ": " + id + " is " + status);
 	}
 	
 	public boolean ShouldCheck()

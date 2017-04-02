@@ -3,7 +3,7 @@ package noob.pwr;
 import java.util.HashMap;
 
 public class ScheduleMaker {
-	public Magazine mainMagazine;
+	public Warehouse mainMagazine;
 	public HashMap<Integer,Truck> trucks;
 	public HashMap<Integer,Shop> shops;
 	public HashMap<Integer,Order> requestedOrders;
@@ -15,7 +15,7 @@ public class ScheduleMaker {
 	}
 	
 	public void Initalize(
-			Magazine magazine,
+			Warehouse magazine,
 			Truck[] vehicles,
 			Shop[] requestsPoints,
 			Order[] orders)

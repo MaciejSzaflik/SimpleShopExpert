@@ -2,32 +2,56 @@ package com.sample
  
 import noob.pwr.Order;
 import noob.pwr.OrderStatus;
- 
+import noob.pwr.Warehouse;
+
+global Warehouse warehouse;
 
 rule "Is Empty"
+salience( 10 )
 	when
 		o : Order( items.size() == 0, ShouldCheck())
 	then
 		o.status = OrderStatus.Declined;
-		System.out.println(drools.getRule().getName() + ": " + o.id  + " was " + o.status);
+		System.out.println(drools.getRule().getName() + ": " + o.id  + " is " + o.status);
 		update(o);
 end
 
 rule "Is Valid"
+salience( 9 )
 	when
 		o : Order( ShouldCheck(), !CheckIfItemsValid())
 	then
 		o.status = OrderStatus.Declined;
-		System.out.println(drools.getRule().getName() + ": " + o.id  + " was " + o.status);
+		System.out.println(drools.getRule().getName() + ": " + o.id  + " is " + o.status);
 		update(o);
 end
 
 rule "No Shop Set"
+salience( 8 )
 	when
 		o : Order( ShouldCheck(), !isRespondedSet())
 	then
 		o.status = OrderStatus.Declined;
-		System.out.println(drools.getRule().getName() + ": " + o.id  + " was " + o.status);
+		o.printStatus(drools.getRule().getName());
+		update(o);
+end
+
+rule "Are Items In Warehouse"
+	when
+		o : Order(ShouldCheck() , warehouse.checkOrderInWarehouse(o))
+	then
+		o.status = OrderStatus.ReadyToSend;
+		warehouse.FillOrder(o);
+		o.printStatus(drools.getRule().getName());
+		update(o);
+end
+
+rule "No Items in Warehouse"
+	when
+		o : Order(ShouldCheck() , !warehouse.checkOrderInWarehouse(o))
+	then
+		o.status = OrderStatus.Declined;
+		o.printStatus(drools.getRule().getName());
 		update(o);
 end
 

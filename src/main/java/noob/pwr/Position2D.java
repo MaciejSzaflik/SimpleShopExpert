@@ -4,6 +4,11 @@ public class Position2D {
 	public int x;
 	public int y;
 	
+	public Position2D(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+
 	public int getManhatanDistance(Position2D point)
 	{
 		return Math.abs(this.x - point.x) + Math.abs(this.y - point.y);

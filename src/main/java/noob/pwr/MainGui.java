@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import org.drools.core.WorkingMemory;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -26,11 +27,19 @@ public class MainGui extends JFrame {
 				 try {
 			            Item[] items = {};
 			            Item[] it2 = {new Item(ProductName.Bakery,-1)};
+			            Item[] it3 = {new Item(ProductName.Bakery,10)};
 			            Order test1 = new Order(items);
 			            Order test2 = new Order(it2);
+			            Order test3 = new Order(it3);
+			            test3.shopId = 0;
+			            Warehouse warehouse = new Warehouse(new Position2D(0,0));
+			            warehouse.addItem(new Item(ProductName.Bakery,100));
+			            kSession.setGlobal( "warehouse", warehouse );
 			            
 			            kSession.insert(test1);	
 			            kSession.insert(test2);
+			            kSession.insert(test3);
+			            kSession.insert(warehouse);
 			            kSession.fireAllRules();
 			        } catch (Throwable t) {
 			            t.printStackTrace();
