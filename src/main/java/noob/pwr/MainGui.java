@@ -287,6 +287,8 @@ public class MainGui extends JFrame {
 		for(Truck truck : this.truckList)
 		{
 			JLabel itemValue = new JLabel(truck.id + " " + truck.capacity +" : " + truck.status);
+			itemValue.setBackground(Color.yellow);
+			itemValue.setOpaque(true);
 			truckStatePanel.add(itemValue);
 		}
 		truckStatePanel.revalidate();
@@ -300,9 +302,35 @@ public class MainGui extends JFrame {
 		{
 			JLabel itemValue = new JLabel(order.id + " : " + order.status);
 			orderStatePanel.add(itemValue);
+			
+			itemValue.setBackground(getColorFromOrderStatus(order.status));
+			itemValue.setOpaque(true);
 		}
 		orderStatePanel.revalidate();
 		orderStatePanel.repaint();
+	}
+	
+	private Color getColorFromOrderStatus(OrderStatus status)
+	{
+		switch(status)
+		{
+		case Accepted:
+			return Color.cyan;
+		case Declined:
+			return Color.red;
+		case Fullfield:
+			return Color.green;
+		case NoItems:
+			return Color.red;
+		case ReadyToSend:
+			return Color.cyan;
+		case Send:
+			return Color.green;
+		case Undecided:
+			return Color.yellow;
+		default:
+			return Color.gray;
+		}
 	}
 	
 	
