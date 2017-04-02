@@ -4,7 +4,8 @@ import java.util.HashMap;
 
 public class Magazine {
 	public Position2D position;
-	public HashMap<String,Item> items;
+	public HashMap<ProductName,Item> items;
+	public HashMap<Integer,Truck> fleet;
 	
 	public Magazine()
 	{
@@ -19,7 +20,8 @@ public class Magazine {
 	public Magazine(Position2D position)
 	{
 		this.position = position;
-		this.items = new HashMap<String,Item>();
+		this.items = new HashMap<ProductName,Item>();
+		this.fleet = new HashMap<Integer,Truck>();
 	}
 	
 	public Item getItemFromMagazine(String type, int quanity)

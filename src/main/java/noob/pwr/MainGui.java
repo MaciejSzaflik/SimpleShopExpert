@@ -25,7 +25,7 @@ public class MainGui extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				 try {
 			            Item[] items = {};
-			            Item[] it2 = {new Item("eggs",-1)};
+			            Item[] it2 = {new Item(ProductName.Bakery,-1)};
 			            Order test1 = new Order(items);
 			            Order test2 = new Order(it2);
 			            

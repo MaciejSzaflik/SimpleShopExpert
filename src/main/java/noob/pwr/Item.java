@@ -1,23 +1,28 @@
 package noob.pwr;
 
 public class Item {
-	private String type;
+	private ProductName type;
 	private int quanity;
 	
-	public Item(String type, int quanity)
+	public Item(ProductName type, int quanity)
 	{
 		this.type = type;
 		this.quanity = quanity;
 	}
 	
-	public boolean checkType(String toCompare)
+	public boolean checkType(ProductName toCompare)
 	{
-		return toCompare.equalsIgnoreCase(getType());
+		return toCompare.equals(getType());
 	}
 	
 	public boolean IsValid()
 	{
-		return type !=null && !type.isEmpty() && quanity > 0;
+		return type !=null && quanity > 0;
+	}
+	
+	public int getWeight()
+	{
+		return ProductWeight.getWeightOfProduct(getType(), getQuanity());
 	}
 	
 	public boolean checkIfEnought(int itemCount)
@@ -50,10 +55,10 @@ public class Item {
 		return new Item(getType(),count);
 	}
 	
-	public String getType() {
+	public ProductName getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(ProductName type) {
 		this.type = type;
 	}
 	public int getQuanity() {

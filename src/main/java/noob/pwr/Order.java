@@ -24,6 +24,16 @@ public class Order {
 		}
 	}
 	
+	public int getSize()
+	{
+		int size = 0;
+		for(Item item : items)
+		{
+			size+=item.getWeight();
+		}
+		return size;
+	}
+	
 	public boolean isRespondedSet()
 	{
 		return shopId > 0;
