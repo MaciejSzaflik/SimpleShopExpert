@@ -12,7 +12,7 @@ public class Order {
 	public long timeStamp;
 	public int shopId = -1;
 	
-	public Order(Item[] order)
+	public Order(Item[] order,int shopId)
 	{
 		id = idGenerator++;
 		decision = "alfa";

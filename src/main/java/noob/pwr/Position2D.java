@@ -1,20 +1,20 @@
 package noob.pwr;
 
 public class Position2D {
-	public int x;
-	public int y;
+	public float x;
+	public float y;
 	
-	public Position2D(int x, int y) {
+	public Position2D(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
 
 	public int getManhatanDistance(Position2D point)
 	{
-		return Math.abs(this.x - point.x) + Math.abs(this.y - point.y);
+		return (int) (Math.abs(this.x - point.x) + Math.abs(this.y - point.y));
 	}
 	
-	public int getTimeToTravel(Position2D to, int speed)
+	public float getTimeToTravel(Position2D to, int speed)
 	{
 		return getManhatanDistance(to)/speed;
 	}
