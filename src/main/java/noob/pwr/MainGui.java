@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.awt.event.ActionEvent;
 
@@ -78,6 +79,8 @@ public class MainGui extends JFrame {
 		
 		JTextArea textArea = new JTextArea();
 		scrollPane_1.setViewportView(textArea);
+		
+		
 	}
 	
 	private void CreateLabels()
@@ -114,13 +117,14 @@ public class MainGui extends JFrame {
 		btnHello.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				 try {
+					 	kSession.setGlobal("warehouse", warehouse);
+					 	
+			            kSession.insert(warehouse);
 					 	for(int i = ordersList.size()-1;i>= 0;i--)
 					 	{
 					 		kSession.insert(ordersList.get(i));	
 					 	}
-					 	kSession.setGlobal("warehouse", warehouse);
 					 	
-			            kSession.insert(warehouse);
 			            kSession.fireAllRules();
 			            UpdateWarehouseUI();
 			            UpdateOrderUI();
@@ -148,6 +152,33 @@ public class MainGui extends JFrame {
 		JButton btnShowLogs = new JButton("Show Logs");
 		btnShowLogs.setBounds(10, 531, 103, 37);
 		getContentPane().add(btnShowLogs);
+		
+		JButton btnCheckTrucks = new JButton("Check Trucks and Shops");
+		btnCheckTrucks.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {
+
+				 	for(Map.Entry<Integer, Truck> entry : warehouse.fleet.entrySet())
+				 	{
+				 		kSession.insert(entry.getValue());
+				 	}
+				 	
+				 	for(int i = 0;i<shopList.size();i++)
+				 	{
+				 		kSession.insert(shopList.get(i));
+				 	}
+				 	
+		            kSession.fireAllRules();
+		        } catch (Throwable t) {
+		            t.printStackTrace();
+		        }
+				
+			}
+		});
+		btnCheckTrucks.setBounds(346, 531, 158, 37);
+		getContentPane().add(btnCheckTrucks);
+		
 	}
 	
 	private void CreatePanels()
@@ -339,6 +370,7 @@ public class MainGui extends JFrame {
 		ks = KieServices.Factory.get();
 		kContainer = ks.getKieClasspathContainer();
      	kSession = kContainer.newKieSession("ksession-rules");
+     	
 	}
 
 	private static MainGui instance;

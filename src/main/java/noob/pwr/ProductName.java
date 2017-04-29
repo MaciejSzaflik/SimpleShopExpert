@@ -1,6 +1,7 @@
 package noob.pwr;
 
 public enum ProductName {
+	Alchohol,
 	Beverages,
 	Bakery,
 	Canned,
@@ -8,9 +9,13 @@ public enum ProductName {
 	Dry,
 	FrozenFoods,
 	Meat,
+	Eggs,
+	Poultry,
 	Produce,
 	Cleaners,
 	PaperGoods,
 	PersonalCare,
-	Other
+	Other,
+	Pyrotechnicks,
+	Fish
 }

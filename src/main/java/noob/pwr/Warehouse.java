@@ -1,6 +1,10 @@
 package noob.pwr;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Warehouse {
 	
@@ -8,6 +12,41 @@ public class Warehouse {
 	public Position2D position;
 	public HashMap<ProductName,Item> items;
 	public HashMap<Integer,Truck> fleet;
+	
+	public Set<ProductName> whatCannotBeSold;
+	public TripleState isFoodIsolated;
+	public TripleState isThereSecurity;
+	public TripleState isThereContaminationProgram;
+	public TripleState isPossibleToClean;
+	
+	public TripleState meatCheck;
+	
+	public TripleState alcholCheck;
+	public TripleState designatedLiquorSpace;
+	public TripleState licenseSaleLiquor;
+	public TripleState haveFederalEmployerIdentification;
+	public TripleState TTBPermit;
+	
+	public TripleState pyroPermit;
+	public TripleState isPyroMarked;
+	public TripleState saveFromSparks;
+	public TripleState necEletric;
+	public TripleState areSwichesOutside;
+	
+	public TripleState isElectricDocumented;
+	public TripleState monitoringOfTemperature;
+	
+	public TripleState fishCertified;
+	public TripleState eggCertified;
+	public TripleState meatCertified;
+	
+	public TripleState alcoholCheck;
+	public TripleState eggCheck;
+	public TripleState fishCheck;
+	public TripleState pyroCheck;
+	
+	public TripleState globalMeatCheck;
+	
 	
 	public Warehouse()
 	{
@@ -25,6 +64,23 @@ public class Warehouse {
 		this.items = new HashMap<ProductName,Item>();
 		this.fleet = new HashMap<Integer,Truck>();
 		this.status = Status.Undefined;
+		this.whatCannotBeSold = new HashSet<ProductName>();
+		this.meatCheck = TripleState.Undefined;
+		this.alcoholCheck = TripleState.Undefined;
+		this.pyroCheck = TripleState.Undefined;
+		this.eggCheck = TripleState.Undefined;
+		this.fishCheck = TripleState.Undefined;
+		this.globalMeatCheck = TripleState.Undefined;
+	}
+	
+	public boolean CanSell(ProductName check)
+	{
+		return whatCannotBeSold.contains(check);
+	}
+	
+	public void AddRestrictedProduct(ProductName toAdd)
+	{
+		whatCannotBeSold.add(toAdd);
 	}
 	
 	public int numberOfTrucks()
@@ -86,7 +142,7 @@ public class Warehouse {
 	
 	public boolean checkItemInMagazine(Item item)
 	{
-		if(!items.containsKey(item.getType()))
+		if(!items.containsKey(item.getType()) || this.whatCannotBeSold.contains(item.getType()))
 			return false;
 		
 		return items.get(item.getType()).checkIfEnought(item.getQuanity());

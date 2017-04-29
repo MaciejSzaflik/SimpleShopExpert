@@ -1,0 +1,228 @@
+//created on: 2017-04-29
+package com.sample
+
+//list any import classes here.
+
+import noob.pwr.Truck;
+import noob.pwr.ProductName;
+import noob.pwr.TripleState;
+
+//declare any global variables here
+
+rule "Clean State Truck"
+
+    when
+        t : Truck( cleanState != TripleState.Good, meatCheck == TripleState.Undefined)
+    then
+        t.SetFoodInvalid();
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver meat: " + t.id );
+		update(t);	
+end
+
+rule "Material is Invalid"
+
+    when
+        t : Truck( materialsUsedValidForFood != TripleState.Good, meatCheck == TripleState.Undefined)
+    then
+        t.SetFoodInvalid();
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver meat: " + t.id );
+		update(t);	
+end
+
+rule "Air rotation"
+
+    when
+        t : Truck( airRotationPossible != TripleState.Good, meatCheck == TripleState.Undefined)
+    then
+        t.SetFoodInvalid();
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver meat: " + t.id );
+		update(t);	
+end
+
+rule "Trucker Crertified"
+
+    when
+        t : Truck( truckerHaveCertificat != TripleState.Good, meatCheck == TripleState.Undefined)
+    then
+        t.SetFoodInvalid();
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver meat: " + t.id );
+		update(t);	
+end
+
+rule "Cooling System"
+
+    when
+        t : Truck( coolingAgregate != TripleState.Good, meatCheck == TripleState.Undefined)
+    then
+        t.SetFoodInvalid();
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver meat: " + t.id );
+		update(t);	
+end
+
+rule "Is Certificate Valid"
+
+    when
+        t : Truck( IsTruckerCertificateValid(), meatCheck == TripleState.Undefined)
+    then
+        t.SetFoodInvalid();
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver meat: " + t.id );
+		update(t);	
+end
+
+rule "Have Pyro Permission"
+
+    when
+        t : Truck(pyroPermission != TripleState.Good, pyroCheck == TripleState.Undefined)
+    then
+        t.AddRestrictedProduct(ProductName.Pyrotechnicks);
+        t.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver pyro: " + t.id );
+		update(t);	
+end
+
+rule "Have Trucker Pyro Certificate"
+
+    when
+        t : Truck(truckerPyroCertificat != TripleState.Good, pyroCheck == TripleState.Undefined)
+    then
+        t.AddRestrictedProduct(ProductName.Pyrotechnicks);
+        t.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver pyro: " + t.id );
+		update(t);	
+end
+
+rule "Trucker Can Use FireEstinguiser"
+
+    when
+        t : Truck(truckerCanUseFireEstinguiser != TripleState.Good, pyroCheck == TripleState.Undefined)
+    then
+        t.AddRestrictedProduct(ProductName.Pyrotechnicks);
+        t.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver pyro: " + t.id );
+		update(t);	
+end
+
+
+rule "Have Good Packaging"
+
+    when
+        t : Truck(packageForPyro != TripleState.Good, pyroCheck == TripleState.Undefined)
+    then
+        t.AddRestrictedProduct(ProductName.Pyrotechnicks);
+        t.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver pyro: " + t.id );
+		update(t);	
+end
+
+
+rule "Have FireEstingisher"
+
+    when
+        t : Truck(haveFireEstingisher != TripleState.Good, pyroCheck == TripleState.Undefined)
+    then
+        t.AddRestrictedProduct(ProductName.Pyrotechnicks);
+        t.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver pyro: " + t.id );
+		update(t);	
+end
+
+
+rule "Have Car Stoppers"
+
+    when
+        t : Truck(truckHaveStoppers != TripleState.Good, pyroCheck == TripleState.Undefined)
+    then
+        t.AddRestrictedProduct(ProductName.Pyrotechnicks);
+        t.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver pyro: " + t.id );
+		update(t);	
+end
+
+rule "Have Torch"
+
+    when
+        t : Truck(haveTorch != TripleState.Good, pyroCheck == TripleState.Undefined)
+    then
+        t.AddRestrictedProduct(ProductName.Pyrotechnicks);
+        t.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver pyro: " + t.id );
+		update(t);	
+end
+
+
+rule "Have Fire Instruction"
+
+    when
+        t : Truck(fireInstrucion != TripleState.Good, pyroCheck == TripleState.Undefined)
+    then
+        t.AddRestrictedProduct(ProductName.Pyrotechnicks);
+        t.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver pyro: " + t.id );
+		update(t);	
+end
+
+
+rule "Have Pyro Documentation"
+
+    when
+        t : Truck(pyroDocumentation != TripleState.Good, pyroCheck == TripleState.Undefined)
+    then
+        t.AddRestrictedProduct(ProductName.Pyrotechnicks);
+        t.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver pyro: " + t.id );
+		update(t);	
+end
+
+
+rule "Have Pyro Insurance"
+
+    when
+        t : Truck(pyroInsurance != TripleState.Good, pyroCheck == TripleState.Undefined)
+    then
+        t.AddRestrictedProduct(ProductName.Pyrotechnicks);
+        t.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver pyro: " + t.id );
+		update(t);	
+end
+
+
+rule "Is Car Marked For Pyro Transport"
+
+    when
+        t : Truck(pyroMarked != TripleState.Good, pyroCheck == TripleState.Undefined)
+    then
+        t.AddRestrictedProduct(ProductName.Pyrotechnicks);
+        t.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver pyro: " + t.id );
+		update(t);	
+end
+
+
+rule "Was precooled"
+
+    when
+        t : Truck(wasPreCooled != TripleState.Good, preCooledCheck == TripleState.Undefined)
+    then
+        t.AddRestrictedProduct(ProductName.Fish);
+        t.AddRestrictedProduct(ProductName.FrozenFoods);
+        t.AddRestrictedProduct(ProductName.Meat);
+        t.AddRestrictedProduct(ProductName.Poultry);
+        t.AddRestrictedProduct(ProductName.Eggs);
+        t.preCooledCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver frozen: " + t.id );
+		update(t);	
+end
+
+
+rule "Whole Truck The Same Temperature"
+
+    when
+        t : Truck(wholeTruckTheSameTemperature != TripleState.Good, !CheckRestricted(ProductName.Fish))
+    then
+        t.AddRestrictedProduct(ProductName.Fish);
+
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver frozen: " + t.id );
+		update(t);	
+end
+
+

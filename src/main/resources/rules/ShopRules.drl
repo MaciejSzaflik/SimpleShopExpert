@@ -1,0 +1,29 @@
+//created on: 2017-04-29
+package com.sample
+
+//list any import classes here.
+
+import noob.pwr.Shop;
+import noob.pwr.TripleState;
+
+//declare any global variables here
+
+
+rule "Is wash possible"
+    when 
+    	s : Shop( washHandsPossible != TripleState.Good, deliveryOfFoodPossible == TripleState.Undefined)
+    then
+    	s.deliveryOfFoodPossible = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Shop cannot recive food: " + s.id );
+		update(s);	
+end
+
+rule "Have cooler"
+     when 
+    	s : Shop( haveCooler != TripleState.Good, deliveryOfFoodPossible == TripleState.Undefined)
+    then
+    	s.deliveryOfFoodPossible = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Shop cannot recive food: " + s.id );
+		update(s);	
+
+end

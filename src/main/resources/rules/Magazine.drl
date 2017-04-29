@@ -3,6 +3,8 @@ package com.sample
 
 import noob.pwr.Warehouse;
 import noob.pwr.Status;
+import noob.pwr.ProductName;
+import noob.pwr.TripleState;
 
 rule "No Trucks"
 
@@ -24,3 +26,217 @@ rule "No Items"
 		update(w);
 
 end
+
+rule "Is Isolated"
+salience( 1000 )
+	when 
+		w : Warehouse(isFoodIsolated != TripleState.Good, meatCheck == TripleState.Undefined)
+	then
+		w.meatCheck = TripleState.Bad;
+		w.AddRestrictedProduct(ProductName.Meat);
+		w.AddRestrictedProduct(ProductName.Poultry);
+		w.AddRestrictedProduct(ProductName.Eggs);
+		w.AddRestrictedProduct(ProductName.Fish);
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell meat.");
+		update(w);	
+end
+
+rule "Is Possible To Clean"
+salience( 1000 )
+	when 
+		w : Warehouse(isPossibleToClean != TripleState.Good, meatCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Meat);
+		w.AddRestrictedProduct(ProductName.Poultry);
+		w.AddRestrictedProduct(ProductName.Eggs);
+		w.AddRestrictedProduct(ProductName.Fish);
+		w.meatCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell meat.");
+		update(w);	
+end
+
+rule "Is There Contamination Program"
+salience( 1000 )
+	when 
+		w : Warehouse(isThereContaminationProgram != TripleState.Good, meatCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Meat);
+		w.AddRestrictedProduct(ProductName.Poultry);
+		w.AddRestrictedProduct(ProductName.Eggs);
+		w.meatCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell meat.");
+		update(w);	
+end
+
+rule "Is There Security"
+salience( 1000 )
+	when 
+		w : Warehouse(isThereSecurity != TripleState.Good, meatCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Meat);
+		w.AddRestrictedProduct(ProductName.Poultry);
+		w.AddRestrictedProduct(ProductName.Eggs);
+		w.meatCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell meat.");
+		update(w);	
+end
+
+rule "Is Designated Liquor Space"
+salience( 1000 )
+	when 
+		w : Warehouse(designatedLiquorSpace != TripleState.Good, alcoholCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Alchohol);
+		w.alcoholCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell alchohol.");
+		update(w);	
+end
+
+rule "Have Liquor License"
+salience( 1000 )
+	when 
+		w : Warehouse(licenseSaleLiquor != TripleState.Good, alcoholCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Alchohol);
+		w.alcoholCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell alchohol.");
+		update(w);	
+end
+
+rule "Have FEI"
+salience( 1000 )
+	when 
+		w : Warehouse(haveFederalEmployerIdentification != TripleState.Good, alcoholCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Alchohol);
+		w.alcoholCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell alchohol.");
+		update(w);	
+end
+
+rule "Have TTB Permit"
+salience( 1000 )
+	when 
+		w : Warehouse(TTBPermit != TripleState.Good, alcoholCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Alchohol);
+		w.alcoholCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell alchohol.");
+		update(w);	
+end
+
+rule "Have Pyro Permit"
+salience( 1000 )
+	when 
+		w : Warehouse(pyroPermit != TripleState.Good, pyroCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Pyrotechnicks);
+		w.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell pyro.");
+		update(w);	
+end
+
+rule "Is Pyro Marked"
+salience( 1000 )
+	when 
+		w : Warehouse(isPyroMarked != TripleState.Good, pyroCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Pyrotechnicks);
+		w.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell pyro.");
+		update(w);	
+end
+
+rule "Save From Sparks"
+salience( 1000 )
+	when 
+		w : Warehouse(saveFromSparks != TripleState.Good, pyroCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Pyrotechnicks);
+		w.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell pyro.");
+		update(w);	
+end
+
+rule "NEC Eletric"
+salience( 1000 )
+	when 
+		w : Warehouse(necEletric != TripleState.Good, pyroCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Pyrotechnicks);
+		w.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell pyro.");
+		update(w);	
+end
+
+rule "Are Switches Outside"
+salience( 1000 )
+	when 
+		w : Warehouse(areSwichesOutside != TripleState.Good, pyroCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Pyrotechnicks);
+		w.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell pyro.");
+		update(w);	
+end
+
+
+rule "Is Eletric Documented"
+salience( 1000 )
+	when 
+		w : Warehouse(isElectricDocumented != TripleState.Good, pyroCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Pyrotechnicks);
+		w.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell pyro.");
+		update(w);	
+end
+
+rule "Temperature monitoring"
+salience( 1000 )
+	when 
+		w : Warehouse(monitoringOfTemperature != TripleState.Good, fishCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Fish);
+		w.fishCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell fish.");
+		update(w);	
+end
+
+rule "Egg certified"
+salience( 1000 )
+	when 
+		w : Warehouse(eggCertified != TripleState.Good, eggCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Eggs);
+		w.eggCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell eggs.");
+		update(w);	
+end
+
+rule "Wild Fish"
+salience( 1000 )
+	when 
+		w : Warehouse(fishCertified != TripleState.Good, fishCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Fish);
+		w.fishCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell fish.");
+		update(w);	
+end
+
+
+rule "Foreign Meat"
+salience( 1000 )
+	when 
+		w : Warehouse(meatCertified != TripleState.Good, globalMeatCheck == TripleState.Undefined)
+	then
+		w.AddRestrictedProduct(ProductName.Meat);
+		w.globalMeatCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Warehouse cannot sell meat.");
+		update(w);	
+end
+
+
+
+		

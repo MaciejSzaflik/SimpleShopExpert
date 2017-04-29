@@ -1,0 +1,15 @@
+//created on: 2017-04-29
+package com.sample
+
+import noob.pwr.CurrentWeather;
+import noob.pwr.TripleState;
+import noob.pwr.Weather;
+
+rule "Bad weather"
+   when
+       c : CurrentWeather(currentWeather ==  Weather.ThunderStorm, canPyroBeTransported == TripleState.Undefined)
+    then
+        c.canPyroBeTransported = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": pyro cannot be trasported");
+		update(c);
+end
