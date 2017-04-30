@@ -31,6 +31,7 @@ public class WarehouseEditor extends JFrame{
 	private JCheckBox chckbxProduktyZwierzcePochodzenia;
 	private JTextArea textArea;
 	private JTextArea textArea_1;
+	private JCheckBox chckbxCzyMateriayPirotechniczne;
 	
 	public void SetFromWarehouse(Warehouse warehouse) {
 		chckbxNewCheckBox.setSelected(TripleState.GetBool(warehouse.isFoodIsolated));
@@ -50,6 +51,7 @@ public class WarehouseEditor extends JFrame{
 		chckbxRybyDzikiePosiadaj.setSelected(TripleState.GetBool(warehouse.fishCertified));
 		chckbxDrbIJajka.setSelected(TripleState.GetBool(warehouse.eggCertified));
 		chckbxProduktyZwierzcePochodzenia.setSelected(TripleState.GetBool(warehouse.meatCertified));
+		chckbxCzyMateriayPirotechniczne.setSelected(TripleState.GetBool(warehouse.isPyroMarked));
 	}
 	
 	public void SetWarehouse()
@@ -72,6 +74,7 @@ public class WarehouseEditor extends JFrame{
 		warehouse.fishCertified = TripleState.FromBool(chckbxRybyDzikiePosiadaj.isSelected());
 		warehouse.eggCertified = TripleState.FromBool(chckbxDrbIJajka.isSelected());
 		warehouse.meatCertified = TripleState.FromBool(chckbxProduktyZwierzcePochodzenia.isSelected());
+		warehouse.isPyroMarked = TripleState.FromBool(chckbxCzyMateriayPirotechniczne.isSelected());
 	}
 	
 	
@@ -149,6 +152,10 @@ public class WarehouseEditor extends JFrame{
 		chckbxProduktyZwierzcePochodzenia.setBounds(6, 423, 449, 23);
 		getContentPane().add(chckbxProduktyZwierzcePochodzenia);
 		
+		chckbxCzyMateriayPirotechniczne = new JCheckBox("Czy materia\u0142y pirotechniczne s\u0105 dobrze oznaczone");
+		chckbxCzyMateriayPirotechniczne.setBounds(6, 445, 449, 23);
+		getContentPane().add(chckbxCzyMateriayPirotechniczne);
+		
 		JButton btnNewButton = new JButton("Zweryfikuj");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -159,7 +166,7 @@ public class WarehouseEditor extends JFrame{
 				ShowRestrictedProducts();
 			}
 		});
-		btnNewButton.setBounds(6, 453, 366, 45);
+		btnNewButton.setBounds(6, 475, 366, 23);
 		getContentPane().add(btnNewButton);
 		
 		textArea = new JTextArea();
@@ -178,6 +185,8 @@ public class WarehouseEditor extends JFrame{
 		scrollPane.setViewportView(textArea_1);
 		
 		PrintStream printStream = new PrintStream(new CustomOutputStream(textArea_1));
+		
+		
 		System.setOut(printStream);
 		
 		SetFromWarehouse(warehouse);

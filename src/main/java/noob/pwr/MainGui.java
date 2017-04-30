@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,8 @@ public class MainGui extends JFrame {
  	public List<Order> ordersList;
  	public List<Shop> shopList;
  	public List<Truck> truckList;
+
+	private JTextArea textArea;
  	
  	public static MainGui MainGuiInstance()
  	{
@@ -81,7 +84,7 @@ public class MainGui extends JFrame {
 		scrollPane_1.setBounds(514, 438, 392, 130);
 		getContentPane().add(scrollPane_1);
 		
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
 		scrollPane_1.setViewportView(textArea);
 	}
 	
@@ -97,7 +100,7 @@ public class MainGui extends JFrame {
 		lblOrdersState.setBounds(178, 11, 158, 28);
 		getContentPane().add(lblOrdersState);
 		
-		JLabel lblFinalResult = new JLabel("Final result:");
+		JLabel lblFinalResult = new JLabel("Logs");
 		lblFinalResult.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblFinalResult.setBounds(514, 399, 158, 28);
 		getContentPane().add(lblFinalResult);
@@ -127,6 +130,10 @@ public class MainGui extends JFrame {
 		btnHello.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				 try {
+						PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));
+						System.setOut(printStream);
+						initializeSession();
+					 
 					 	kSession.setGlobal("warehouse", warehouse);
 					 	
 			            kSession.insert(warehouse);
@@ -156,12 +163,15 @@ public class MainGui extends JFrame {
 		
 		
 		JButton btnOrganizeTrucks = new JButton("Organize Trucks");
+		btnOrganizeTrucks.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TruckEditor editor = new TruckEditor ();
+				editor.setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
+				editor.setVisible (true);
+			}
+		});
 		btnOrganizeTrucks.setBounds(346, 483, 158, 37);
 		getContentPane().add(btnOrganizeTrucks);
-		
-		JButton btnShowLogs = new JButton("Show Logs");
-		btnShowLogs.setBounds(10, 531, 103, 37);
-		getContentPane().add(btnShowLogs);
 		
 		JButton btnCheckTrucks = new JButton("Check Trucks and Shops");
 		btnCheckTrucks.addActionListener(new ActionListener() {
@@ -319,6 +329,9 @@ public class MainGui extends JFrame {
 	
 	private void UpdateWarehouseUI()
 	{
+
+	
+		
 		warehousePanel.removeAll();
 		for(ProductName name : ProductName.values())
 		{

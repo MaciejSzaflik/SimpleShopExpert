@@ -11,7 +11,7 @@ public class Truck {
 	public int capacity;
 	public TruckState status;
 	
-	public TripleState meatCheck;
+	
 	public TripleState cleanState;
 	public TripleState conditionState;
 	public TripleState materialsUsedValidForFood;
@@ -19,10 +19,13 @@ public class Truck {
 	public TripleState truckerHaveCertificat;
 	public Date truckerCertificatDate;
 	public TripleState coolingAgregate;
-	public Set<ProductName> whatCannotBeDelivered;
+	
 	public TripleState usedOnlyForFood;
 	
-	public TripleState pyroCheck;
+	
+	public TripleState wasPreCooled;
+	public TripleState wholeTruckTheSameTemperature;
+	
 	public TripleState pyroPermission;
 	public TripleState truckerPyroCertificat;
 	public TripleState truckerCanUseFireEstinguiser;
@@ -34,12 +37,13 @@ public class Truck {
 	public TripleState pyroDocumentation;
 	public TripleState pyroInsurance;
 	public TripleState pyroMarked;
+	public TripleState onlyPyro;
 	
+	public TripleState meatCheck;
 	public TripleState preCooledCheck;
+	public TripleState pyroCheck;
 	
-	public TripleState wasPreCooled;
-	public TripleState wholeTruckTheSameTemperature;
-
+	public Set<ProductName> whatCannotBeDelivered;
 	
 	
 	public Truck(int capacity)
@@ -47,6 +51,11 @@ public class Truck {
 		id = idGenerator++;
 		this.capacity = capacity;
 		status = TruckState.Idle;
+		ClearChecks();
+	}
+	
+	public void ClearChecks()
+	{
 		meatCheck = TripleState.Undefined;
 		preCooledCheck = TripleState.Undefined;
 		pyroCheck = TripleState.Undefined;
@@ -54,6 +63,7 @@ public class Truck {
 		truckerCertificatDate = new Date();
 		this.whatCannotBeDelivered = new HashSet<ProductName>();
 	}
+	
 	
 	public void AddRestrictedProduct(ProductName toAdd)
 	{

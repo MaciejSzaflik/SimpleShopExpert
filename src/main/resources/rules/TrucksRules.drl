@@ -80,6 +80,17 @@ rule "Have Pyro Permission"
 		update(t);	
 end
 
+rule "Only for Pyro"
+
+    when
+        t : Truck(onlyPyro != TripleState.Good, pyroCheck == TripleState.Undefined)
+    then
+        t.AddRestrictedProduct(ProductName.Pyrotechnicks);
+        t.pyroCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver pyro: " + t.id );
+		update(t);	
+end
+
 rule "Have Trucker Pyro Certificate"
 
     when
