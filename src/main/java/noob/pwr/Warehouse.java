@@ -63,8 +63,14 @@ public class Warehouse {
 		this.position = position;
 		this.items = new HashMap<ProductName,Item>();
 		this.fleet = new HashMap<Integer,Truck>();
+		ClearAllChecks();
+	}
+	
+	public void ClearAllChecks()
+	{
 		this.status = Status.Undefined;
 		this.whatCannotBeSold = new HashSet<ProductName>();
+
 		this.meatCheck = TripleState.Undefined;
 		this.alcoholCheck = TripleState.Undefined;
 		this.pyroCheck = TripleState.Undefined;

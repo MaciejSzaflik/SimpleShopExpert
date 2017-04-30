@@ -43,14 +43,18 @@ public class MainGui extends JFrame {
 	KieContainer kContainer;
  	KieSession kSession;
  	
- 	Warehouse warehouse;
+ 	public Warehouse warehouse;
  	public List<Order> ordersList;
  	public List<Shop> shopList;
  	public List<Truck> truckList;
+ 	
+ 	public static MainGui MainGuiInstance()
+ 	{
+ 		return MainGui.instance;
+ 	}
 	
 	public MainGui() {
         SetLookAndFeel();
-		
 		getContentPane().setLayout(null);
 		initializeSession();
 		CreatePanels();
@@ -79,8 +83,6 @@ public class MainGui extends JFrame {
 		
 		JTextArea textArea = new JTextArea();
 		scrollPane_1.setViewportView(textArea);
-		
-		
 	}
 	
 	private void CreateLabels()
@@ -109,6 +111,14 @@ public class MainGui extends JFrame {
 		lblTrucksState.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblTrucksState.setBounds(346, 11, 158, 28);
 		getContentPane().add(lblTrucksState);
+	}
+	
+	public void VerifyWarehouse()
+	{
+		initializeSession();
+		
+		kSession.insert(warehouse);
+        kSession.fireAllRules();
 	}
 	
 	private void CreateButtons()
@@ -179,13 +189,24 @@ public class MainGui extends JFrame {
 		btnCheckTrucks.setBounds(346, 531, 158, 37);
 		getContentPane().add(btnCheckTrucks);
 		
+		JButton btnEditWarehouse = new JButton("Edit Warehouse");
+		btnEditWarehouse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				WarehouseEditor editor = new WarehouseEditor ();
+				editor.setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
+				editor.setVisible (true);
+			}
+		});
+		btnEditWarehouse.setBounds(10, 50, 158, 37);
+		getContentPane().add(btnEditWarehouse);
+		
 	}
 	
 	private void CreatePanels()
 	{
 		warehouseStatePane = new JScrollPane();
 		warehouseStatePane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		warehouseStatePane.setBounds(10, 50, 158, 422);
+		warehouseStatePane.setBounds(10, 92, 158, 380);
 		getContentPane().add(warehouseStatePane);
 		
 		warehousePanel = new JPanel();
@@ -378,5 +399,6 @@ public class MainGui extends JFrame {
 	public static void main(String[] args) {
 		MainGui.instance = new MainGui();
 		MainGui.instance.setVisible(true);
+		MainGui.instance.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
 	}
 }
