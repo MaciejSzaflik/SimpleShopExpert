@@ -187,11 +187,12 @@ public class WarehouseEditor extends JFrame{
 		PrintStream printStream = new PrintStream(new CustomOutputStream(textArea_1));
 		
 		
-		System.setOut(printStream);
+		//System.setOut(printStream);
 		
 		SetFromWarehouse(warehouse);
 	}
 	
+
 	public void ShowRestrictedProducts()
 	{
 		StringBuilder sb = new StringBuilder();

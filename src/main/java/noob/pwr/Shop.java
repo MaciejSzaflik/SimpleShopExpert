@@ -13,6 +13,11 @@ public class Shop {
 	{
 		id = idGenerator++;
 		this.position = position;
+		ClearCheck();
+	}
+	
+	public void ClearCheck()
+	{
 		deliveryOfFoodPossible = TripleState.Undefined;
 	}
 }

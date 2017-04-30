@@ -26,6 +26,12 @@ public class Order {
 		this.shopId = shopId;
 	}
 	
+	public void ClearAllChecks()
+	{
+		decision = "alfa";
+		status = OrderStatus.Undecided;
+	}
+	
 	public int getSize()
 	{
 		int size = 0;

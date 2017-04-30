@@ -182,6 +182,15 @@ public class Warehouse {
 		}
 	}
 	
+	public void RestoreTestData()
+	{
+		this.items = new HashMap<ProductName,Item>();
+		for(ProductName name : ProductName.values())
+		{
+			this.addItem(new Item(name,100));
+		}
+	}
+	
 	public void addTruck(Truck truck)
 	{
 		if(!fleet.containsKey(truck.id))

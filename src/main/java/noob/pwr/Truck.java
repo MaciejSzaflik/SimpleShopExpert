@@ -46,12 +46,39 @@ public class Truck {
 	public Set<ProductName> whatCannotBeDelivered;
 	
 	
+	public void SetAllGood()
+	{
+		cleanState = TripleState.Good;
+		conditionState = TripleState.Good;
+		materialsUsedValidForFood = TripleState.Good;
+		airRotationPossible = TripleState.Good;
+		truckerHaveCertificat = TripleState.Good;
+		coolingAgregate = TripleState.Good;
+
+		usedOnlyForFood = TripleState.Good;
+		wasPreCooled = TripleState.Good;
+		wholeTruckTheSameTemperature = TripleState.Good;
+		pyroPermission = TripleState.Good;
+		truckerPyroCertificat = TripleState.Good;
+		truckerCanUseFireEstinguiser = TripleState.Good;
+		packageForPyro = TripleState.Good;
+		haveFireEstingisher = TripleState.Good;
+		truckHaveStoppers = TripleState.Good;
+		haveTorch = TripleState.Good;
+		fireInstrucion = TripleState.Good;
+		pyroDocumentation = TripleState.Good;
+		pyroInsurance = TripleState.Good;
+		pyroMarked = TripleState.Good;
+		onlyPyro = TripleState.Good;
+	}
+	
 	public Truck(int capacity)
 	{
 		id = idGenerator++;
 		this.capacity = capacity;
 		status = TruckState.Idle;
 		ClearChecks();
+		SetAllGood();
 	}
 	
 	public void ClearChecks()
@@ -81,6 +108,7 @@ public class Truck {
 		AddRestrictedProduct(ProductName.Meat);
 		AddRestrictedProduct(ProductName.Poultry);
 		AddRestrictedProduct(ProductName.Eggs);
+		AddRestrictedProduct(ProductName.Fish);
 	}
 	
 	public boolean IsTruckerCertificateValid()

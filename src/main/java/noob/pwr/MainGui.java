@@ -76,9 +76,6 @@ public class MainGui extends JFrame {
 	
 	private void CreateTextField()
 	{
-		JFormattedTextField formattedTextField = new JFormattedTextField();
-		formattedTextField.setBounds(285, 531, 48, 37);
-		getContentPane().add(formattedTextField);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(514, 438, 392, 130);
@@ -86,6 +83,38 @@ public class MainGui extends JFrame {
 		
 		textArea = new JTextArea();
 		scrollPane_1.setViewportView(textArea);
+		
+		PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));
+		
+		JButton btnCreateHarmonogram = new JButton("Create Schedule");
+		btnCreateHarmonogram.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CreateSchedule();
+			}
+		});
+		btnCreateHarmonogram.setBounds(10, 531, 158, 37);
+		getContentPane().add(btnCreateHarmonogram);
+		
+		JButton btnCheckShops = new JButton("Check Shops");
+		btnCheckShops.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ShopEditor editor = new ShopEditor ();
+				editor.setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
+				editor.setVisible (true);
+			}
+		});
+		btnCheckShops.setBounds(178, 483, 158, 37);
+		getContentPane().add(btnCheckShops);
+		System.setOut(printStream);
+	}
+	
+	private void CreateSchedule()
+	{
+		//List<Orders> orders = new Array<List>
+	 	for(int i = ordersList.size()-1;i>= 0;i--)
+	 	{
+	 		System.out.println(ordersList.get(i).status);
+	 	}
 	}
 	
 	private void CreateLabels()
@@ -124,21 +153,38 @@ public class MainGui extends JFrame {
         kSession.fireAllRules();
 	}
 	
+	public void VerifyTruck(int id)
+	{
+		initializeSession();
+		
+		kSession.insert(warehouse.fleet.get(id));
+        kSession.fireAllRules();
+	}
+	
+	public void VerifyShop(int id)
+	{
+		initializeSession();
+		
+		kSession.insert(shopList.get(id));
+        kSession.fireAllRules();
+	}
+	
 	private void CreateButtons()
 	{
 		JButton btnHello = new JButton("Verify and Fill Orders");
 		btnHello.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				 try {
-						PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));
-						System.setOut(printStream);
+					 	textArea.setText("");
 						initializeSession();
-					 
+						warehouse.ClearAllChecks();
+						warehouse.RestoreTestData();
 					 	kSession.setGlobal("warehouse", warehouse);
 					 	
 			            kSession.insert(warehouse);
 					 	for(int i = ordersList.size()-1;i>= 0;i--)
 					 	{
+					 		ordersList.get(i).ClearAllChecks();
 					 		kSession.insert(ordersList.get(i));	
 					 	}
 					 	
@@ -152,14 +198,6 @@ public class MainGui extends JFrame {
 		});
 		btnHello.setBounds(10, 483, 158, 37);
 		getContentPane().add(btnHello);
-		
-		JButton btnAddOrder = new JButton("Add Order");
-		btnAddOrder.setBounds(178, 483, 158, 37);
-		getContentPane().add(btnAddOrder);
-		
-		JButton btnRemoveOrder = new JButton("Remove Order");
-		btnRemoveOrder.setBounds(178, 531, 103, 37);
-		getContentPane().add(btnRemoveOrder);
 		
 		
 		JButton btnOrganizeTrucks = new JButton("Organize Trucks");
@@ -178,14 +216,17 @@ public class MainGui extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				try {
-
+					textArea.setText("");
+					initializeSession();
 				 	for(Map.Entry<Integer, Truck> entry : warehouse.fleet.entrySet())
 				 	{
+				 		entry.getValue().ClearChecks();
 				 		kSession.insert(entry.getValue());
 				 	}
 				 	
 				 	for(int i = 0;i<shopList.size();i++)
 				 	{
+				 		shopList.get(i).ClearCheck();
 				 		kSession.insert(shopList.get(i));
 				 	}
 				 	
@@ -329,9 +370,6 @@ public class MainGui extends JFrame {
 	
 	private void UpdateWarehouseUI()
 	{
-
-	
-		
 		warehousePanel.removeAll();
 		for(ProductName name : ProductName.values())
 		{
@@ -401,6 +439,12 @@ public class MainGui extends JFrame {
 	
 	public void initializeSession()
 	{
+		if(kContainer!=null)
+			kContainer.dispose();
+		if(kSession!=null)
+			kSession.destroy();
+
+		
 		ks = KieServices.Factory.get();
 		kContainer = ks.getKieClasspathContainer();
      	kSession = kContainer.newKieSession("ksession-rules");

@@ -59,16 +59,6 @@ rule "Cooling System"
 		update(t);	
 end
 
-rule "Is Certificate Valid"
-
-    when
-        t : Truck( IsTruckerCertificateValid(), meatCheck == TripleState.Undefined)
-    then
-        t.SetFoodInvalid();
-		System.out.println(drools.getRule().getName() + ": Truck cannot deliver meat: " + t.id );
-		update(t);	
-end
-
 rule "Have Pyro Permission"
 
     when
@@ -122,6 +112,28 @@ rule "Have Good Packaging"
         t.AddRestrictedProduct(ProductName.Pyrotechnicks);
         t.pyroCheck = TripleState.Bad;
 		System.out.println(drools.getRule().getName() + ": Truck cannot deliver pyro: " + t.id );
+		update(t);	
+end
+
+rule "Only For Food"
+
+    when
+        t : Truck(usedOnlyForFood != TripleState.Good, meatCheck == TripleState.Undefined)
+    then
+      	t.SetFoodInvalid();
+        t.meatCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver meat: " + t.id );
+		update(t);	
+end
+
+rule "Good condition"
+
+    when
+        t : Truck(conditionState != TripleState.Good, meatCheck == TripleState.Undefined)
+    then
+      	t.SetFoodInvalid();
+        t.meatCheck = TripleState.Bad;
+		System.out.println(drools.getRule().getName() + ": Truck cannot deliver meat: " + t.id );
 		update(t);	
 end
 
