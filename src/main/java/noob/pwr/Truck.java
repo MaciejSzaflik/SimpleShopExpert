@@ -1,7 +1,9 @@
 package noob.pwr;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class Truck {
@@ -10,6 +12,9 @@ public class Truck {
 	public int speed;
 	public int capacity;
 	public TruckState status;
+	public Position2D currentPosition;
+	
+	public Date whenIdle;
 	
 	
 	public TripleState cleanState;
@@ -79,6 +84,19 @@ public class Truck {
 		status = TruckState.Idle;
 		ClearChecks();
 		SetAllGood();
+		speed = 1;
+		whenIdle = new Date();
+	}
+	
+	public boolean CanPerformThisOrder(Order order)
+	{
+		for(Item item : order.items)
+		{
+			if(this.whatCannotBeDelivered.contains(item.getType()))
+				return false;
+		}
+		
+		return true;
 	}
 	
 	public void ClearChecks()
@@ -86,7 +104,6 @@ public class Truck {
 		meatCheck = TripleState.Undefined;
 		preCooledCheck = TripleState.Undefined;
 		pyroCheck = TripleState.Undefined;
-		
 		truckerCertificatDate = new Date();
 		this.whatCannotBeDelivered = new HashSet<ProductName>();
 	}
@@ -115,5 +132,20 @@ public class Truck {
 	{
 	    Date currentDate = new Date();
 		return Util.getDiffYears(currentDate, truckerCertificatDate) > 1;
+	}
+	
+	public Date GetTimeToTravel(Position2D position)
+	{
+		int time = Math.round(position.getTimeToTravel(currentPosition, speed));
+		Calendar cal = Calendar.getInstance();
+        cal.setTime(whenIdle);
+        cal.add(Calendar.MINUTE, time);
+        return cal.getTime();
+	}
+
+	public void FullfillOrder(Order order,Position2D shopPosition) {
+		whenIdle = GetTimeToTravel(shopPosition);
+        currentPosition = shopPosition;
+       
 	}
 }

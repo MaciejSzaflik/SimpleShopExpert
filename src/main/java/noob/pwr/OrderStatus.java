@@ -7,5 +7,6 @@ public enum OrderStatus {
 	Accepted,
 	Declined,
 	Undecided,
-	NoItems
+	NoItems,
+	NoTruck
 }

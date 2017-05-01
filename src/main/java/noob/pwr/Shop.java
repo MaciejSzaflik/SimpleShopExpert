@@ -14,10 +14,27 @@ public class Shop {
 		id = idGenerator++;
 		this.position = position;
 		ClearCheck();
+		
+		washHandsPossible = TripleState.Good;
+		haveCooler = TripleState.Good;
 	}
 	
 	public void ClearCheck()
 	{
 		deliveryOfFoodPossible = TripleState.Undefined;
+	}
+	
+	public boolean CheckIfCanSellThis(Order order)
+	{
+		if(deliveryOfFoodPossible != TripleState.Bad)
+			return true;
+		
+		for(Item item : order.items)
+		{
+			if(ProductName.isThisFood(item.getType()))
+				return false;
+		}
+		
+		return true;
 	}
 }

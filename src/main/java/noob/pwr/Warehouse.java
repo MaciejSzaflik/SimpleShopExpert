@@ -196,6 +196,7 @@ public class Warehouse {
 		if(!fleet.containsKey(truck.id))
 		{
 			fleet.put(truck.id,truck);
+			truck.currentPosition = position;
 		}
 	}
 	

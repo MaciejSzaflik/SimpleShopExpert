@@ -6,6 +6,8 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -110,11 +112,124 @@ public class MainGui extends JFrame {
 	
 	private void CreateSchedule()
 	{
-		//List<Orders> orders = new Array<List>
-	 	for(int i = ordersList.size()-1;i>= 0;i--)
+		
+		for(Map.Entry<Integer, Truck> entry : warehouse.fleet.entrySet())
 	 	{
-	 		System.out.println(ordersList.get(i).status);
+	 		entry.getValue().currentPosition = warehouse.position;
+	 		entry.getValue().whenIdle = new Date();
 	 	}
+		
+		StringBuilder sb = new StringBuilder();
+		List<ScheduleEntry> schedule = new ArrayList<ScheduleEntry>();
+		sb.append("----------Start Schedule-------- \r\n");
+		List<Order> ordersToFill = new ArrayList<Order>();
+	 	for(int i = 0;i< ordersList.size();i++)
+	 	{
+	 		int shopId = ordersList.get(i).shopId;
+	 		if(ordersList.get(i).status == OrderStatus.ReadyToSend)
+	 		{
+	 			if(shopList.get(shopId).CheckIfCanSellThis(ordersList.get(i)))
+	 			{
+	 				ordersToFill.add(ordersList.get(i));
+	 			}
+	 			else
+	 				ordersList.get(i).status = OrderStatus.Declined;
+	 		}
+	 	}
+	 	
+	 	for(int i = 0;i< ordersToFill.size();i++)
+	 	{
+	 		Truck truck = TryToFindTruck(ordersToFill.get(i));
+	 		if(truck == null)
+	 		{
+	 			ordersToFill.get(i).status = OrderStatus.NoTruck;
+	 			continue;
+	 		}
+	 		Shop shop = shopList.get(ordersToFill.get(i).shopId);
+	 		Date date = truck.whenIdle;
+	 		Position2D position = truck.currentPosition;
+	 		truck.FullfillOrder(ordersToFill.get(i),shop.position);
+	 		truck.status = TruckState.Used;
+	 		schedule.add(new ScheduleEntry(date,truck.whenIdle,truck.id,ordersToFill.get(i).id,ordersToFill.get(i).shopId,position,truck.currentPosition));
+	 		ordersToFill.get(i).status = OrderStatus.Fullfield;
+	 	}
+	 	
+	 	schedule.sort((a,b) ->  a.compareTo(b));
+	 	shopPanel.listLines = new ArrayList<Position2D>();
+	 	
+	 	for(ScheduleEntry entry : schedule)
+	 	{
+	 		shopPanel.listLines.add(entry.startPosition);
+	 		shopPanel.listLines.add(entry.endPosition);
+	 		sb.append(entry);
+	 	}
+	 	
+	 	sb.append("----------End Schedule--------");
+	 	
+	 	TextWindow textWindow = new TextWindow(sb.toString());
+	 	textWindow.setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
+	 	textWindow.setVisible (true);
+	 	
+	 	shopPanel.repaint();
+	 	UpdateOrderUI();
+	 	UpdateTruckUI();
+	}
+	
+	private class ScheduleEntry implements Comparable<ScheduleEntry>
+	{
+		public Date start;
+		public Date end;
+		public int truckId;
+		public int orderId;
+		public int shopId;
+		
+		public Position2D startPosition;
+		public Position2D endPosition;
+		
+		public ScheduleEntry(Date timestampStart,Date timestampEnd, int truckId, int orderId, int shopId, Position2D startPosition, Position2D endPosition){
+			this.start = timestampStart;
+			this.end = timestampEnd;
+			this.truckId = truckId;
+			this.orderId = orderId;
+			this.shopId = shopId;
+			this.startPosition = startPosition;
+			this.endPosition = endPosition;
+		}
+		
+		public String toString()
+		{
+			return String.format("Start: %1$s||End: %2$s||Order: %3$s||To: %4$s||By: %5$s||Distance: %6$s  \r\n", start,end,orderId,shopId,truckId,
+					this.startPosition.getManhatanDistance(endPosition));
+		}
+
+		@Override
+		public int compareTo(ScheduleEntry arg0) {
+			return (int) (start.getTime() - arg0.start.getTime());
+		}
+	 
+	}
+	
+	private Truck TryToFindTruck(Order order)
+	{
+		int miniumIndex = -1;
+		long minimum = Long.MAX_VALUE;
+		for(Map.Entry<Integer, Truck> entry : warehouse.fleet.entrySet())
+		{
+			if(entry.getValue().CanPerformThisOrder(order))
+			{
+				Position2D position = shopList.get(order.shopId).position;
+				if(entry.getValue().GetTimeToTravel(position).getTime() < minimum)
+				{
+					minimum = entry.getValue().whenIdle.getTime();
+					miniumIndex = entry.getValue().id;
+				}
+			}
+		}
+		
+		if(miniumIndex < 0)
+			return null;
+		else
+			return  warehouse.fleet.get(miniumIndex);
 	}
 	
 	private void CreateLabels()
@@ -338,7 +453,7 @@ public class MainGui extends JFrame {
 	{
 		this.truckList = new ArrayList<Truck>();
 		
-		for(int i = 0;i<15;i++)
+		for(int i = 0;i<5;i++)
 		{
 			truckList.add(new Truck(GetRandomInt(80,200)));
 		}
@@ -390,7 +505,7 @@ public class MainGui extends JFrame {
 		for(Truck truck : this.truckList)
 		{
 			JLabel itemValue = new JLabel(truck.id + " " + truck.capacity +" : " + truck.status);
-			itemValue.setBackground(Color.yellow);
+			itemValue.setBackground(truck.status == TruckState.Idle?Color.yellow : Color.green);
 			itemValue.setOpaque(true);
 			truckStatePanel.add(itemValue);
 		}
@@ -431,6 +546,8 @@ public class MainGui extends JFrame {
 			return Color.green;
 		case Undecided:
 			return Color.yellow;
+		case NoTruck:
+			return Color.magenta;
 		default:
 			return Color.gray;
 		}
